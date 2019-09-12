@@ -1,5 +1,6 @@
 package rjb.springservices.msbeerservice.web.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ public class BeerController {
 
     private final BeerService beerService;
 
+    @Autowired
     public BeerController(BeerService beerService) {
         this.beerService = beerService;
     }
@@ -28,18 +30,11 @@ public class BeerController {
     @PostMapping
     public ResponseEntity handlePost(@RequestBody BeerDto beerDto){
 
-        BeerDto savedDto = beerService.saveNewBeer(beerDto);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Location", "/api/v1/beer" + savedDto.getId().toString());
-
-        return new ResponseEntity(headers, HttpStatus.CREATED);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @PutMapping({"/{beerId}"})
     public ResponseEntity handleUpdate(@PathVariable UUID beerId, @RequestBody BeerDto beerDto){
-
-        beerService.updateBeer(beerId, beerDto);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
 
@@ -49,7 +44,7 @@ public class BeerController {
     @DeleteMapping({"/{beerId}"})
     public void deleteBeer (@PathVariable UUID beerId){
 
-        beerService.deleteById(beerId);
+
 
     }
 }
