@@ -14,6 +14,8 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/beer")
 public class BeerController {
+    //Note that there is another use of validation at controller level which requires the @Validated at class level (above here)
+    //with the field annotation used with the method parameter.  This use is not required here but may be needed in other situations...
 
     private final BeerService beerService;
 
