@@ -9,7 +9,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import rjb.springservices.msbeerservice.services.BeerService;
 import rjb.springservices.msbeerservice.web.model.BeerDto;
+import rjb.springservices.msbeerservice.web.model.BeerStyleEnum;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -39,7 +44,7 @@ class BeerControllerTest {
     @Test
     void handlePost() throws Exception {
 
-        BeerDto beerDto = BeerDto.builder().build();
+        BeerDto beerDto = getValidBeerDto();
         String beerDtoJson = objectMapper.writeValueAsString(beerDto);
 
         mockMvc.perform(post("/api/v1/beer/")
@@ -51,13 +56,22 @@ class BeerControllerTest {
     @Test
     void handleUpdate() throws Exception {
 
-        BeerDto beerDto = BeerDto.builder().build();
+        BeerDto beerDto = getValidBeerDto();
         String beerDtoJson = objectMapper.writeValueAsString(beerDto);
 
         mockMvc.perform(put("/api/v1/beer/" + UUID.randomUUID().toString())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(beerDtoJson))
                 .andExpect(status().isNoContent());
+    }
+
+    BeerDto getValidBeerDto(){
+        return BeerDto.builder()
+                .beerName("Jackyl")
+                .beerStyle(BeerStyleEnum.ALE)
+                .price(new BigDecimal("12.13"))
+                .upc(123456789012L)
+                .build();
     }
 
 
