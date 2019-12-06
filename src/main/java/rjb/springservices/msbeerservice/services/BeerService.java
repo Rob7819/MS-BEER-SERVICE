@@ -1,5 +1,6 @@
 package rjb.springservices.msbeerservice.services;
 
+import org.springframework.http.ResponseEntity;
 import rjb.springservices.msbeerservice.web.model.BeerDto;
 
 import java.util.UUID;

@@ -1,5 +1,7 @@
 package rjb.springservices.msbeerservice.web.controller;
 
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,7 @@ import rjb.springservices.msbeerservice.web.model.BeerDto;
 import javax.validation.Valid;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/beer")
 public class BeerController {
@@ -18,11 +21,6 @@ public class BeerController {
     //with the field annotation used with the method parameter.  This use is not required here but may be needed in other situations...
 
     private final BeerService beerService;
-
-    @Autowired
-    public BeerController(BeerService beerService) {
-        this.beerService = beerService;
-    }
 
     @GetMapping({"/{beerId}"})
     public ResponseEntity<BeerDto> getBeer (@PathVariable UUID beerId) {
@@ -33,13 +31,13 @@ public class BeerController {
     @PostMapping
     public ResponseEntity handlePost(@Valid @RequestBody BeerDto beerDto){
 
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity<>(beerService.saveNewBeer(beerDto), HttpStatus.CREATED);
     }
 
     @PutMapping({"/{beerId}"})
     public ResponseEntity handleUpdate(@PathVariable UUID beerId, @Valid @RequestBody BeerDto beerDto){
 
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(beerService.updateBeer(beerId, beerDto), HttpStatus.NO_CONTENT);
 
     }
 
@@ -47,7 +45,7 @@ public class BeerController {
     @DeleteMapping({"/{beerId}"})
     public void deleteBeer (@PathVariable UUID beerId){
 
-
+        beerService.deleteById(beerId);
 
     }
 }
